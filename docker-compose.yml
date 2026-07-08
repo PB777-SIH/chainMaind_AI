@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 🐘 Relational + Vector Memory
+  db:
+    image: ankane/pgvector:latest # Special Postgres image with pgvector pre-installed
+    container_name: chainmind_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: poshika
+      POSTGRES_PASSWORD: expert_password
+      POSTGRES_DB: chainmind_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-postgres.sh:/docker-entrypoint-initdb.d/init-postgres.sh
+
+  # 🕸️ Relationship Memory (The Digital Twin)
+  neo4j:
+    image: neo4j:community
+    container_name: chainmind_neo4j
+    ports:
+      - "7474:7474" # Web UI
+      - "7687:7687" # Bolt Protocol (for Python to talk to Neo4j)
+    environment:
+      NEO4J_AUTH: neo4j/expert_password
+      NEO4J_PLUGINS: '["gds", "apoc"]' # Graph Data Science + Awesome Procedures
+    volumes:
+      - neo4j_data:/data
+
+volumes:
+  postgres_data:
+  neo4j_data:
