@@ -42,21 +42,23 @@ class SemiconductorGraph:
 
         print("🕸️ Mapping the Semiconductor Supply Chain in Neo4j...")
 
-        cypher_query = """
-        // 1. Create the Nodes (The Companies)
-        MERGE (asml:EquipmentMaker {name: 'ASML', country: 'Netherlands'})
-        MERGE (tsmc:Foundry {name: 'TSMC', country: 'Taiwan'})
-        MERGE (nvidia:DesignHouse {name: 'NVIDIA', country: 'USA'})
-        MERGE (apple:Company {name: 'Apple', country: 'USA'})
+        cypher_query =  """
+            // Create Nodes
+           CREATE (asml:EquipmentMaker {name: 'ASML', region: 'Netherlands'})
+           CREATE (tsmc:Foundry {name: 'TSMC', region: 'Taiwan'})
+           CREATE (nvidia:DesignHouse {name: 'NVIDIA', region: 'USA'})
+           CREATE (apple:DesignHouse {name: 'Apple', region: 'USA'})
+           CREATE (hsinchu:Region {name: 'Hsinchu Science Park'})
+           CREATE (port_kaohsiung:Port {name: 'Port of Kaohsiung'})
 
-        // 2. Create the Edges (The Relationships)
-        MERGE (tsmc)-[:DEPENDS_ON_EQUIPMENT]->(asml)
-        MERGE (nvidia)-[:DEPENDS_ON_FAB]->(tsmc)
-        MERGE (apple)-[:DEPENDS_ON_CHIPS]->(tsmc)
-        MERGE (asml)-[:SUPPLIES_TO]->(tsmc)
-        MERGE (tsmc)-[:SUPPLIES_TO]->(nvidia)
-        MERGE (tsmc)-[:SUPPLIES_TO]->(apple)
-        """
+            // Create Explicit Typed Relationships (The Nervous System)
+            CREATE (asml)-[:SUPPLIES_TO]->(tsmc)
+            CREATE (asml)-[:DEPENDS_ON_EQUIPMENT]->(tsmc)
+            CREATE (tsmc)-[:SUPPLIES_TO]->(nvidia)
+            CREATE (tsmc)-[:SUPPLIES_TO]->(apple)
+            CREATE (tsmc)-[:LOCATED_IN]->(hsinchu)
+            CREATE (tsmc)-[:LOCATED_IN]->(port_kaohsiung)
+            """
 
         with self.driver.session() as session:
             session.run(cypher_query)

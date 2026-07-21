@@ -22,7 +22,7 @@ def extract_risk_intelligence(news_text):
     """
     try:
         completion = groq_client.chat.completions.create(
-            model="llama3-70b-8192",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": f"Analyze this: {news_text}"}
@@ -37,7 +37,7 @@ def extract_risk_intelligence(news_text):
 # --- OPTION 2: LOCAL AI (Ollama) ---
 def extract_risk_local(news_text):
     """Uses local Llama 3.1 to analyze risk at $0 cost."""
-    print("🏠 Using local Ollama for analysis...")
+    print("🏠 Using ollama for analysis...")
     url = "http://localhost:11434/api/generate"
     prompt = f"Analyze this news for semiconductor supply chain risk: {news_text}. Return ONLY a JSON object with impact_score, primary_entity, event_type, and summary."
     
@@ -53,3 +53,4 @@ def extract_risk_local(news_text):
     except Exception as e:
         print(f"❌ Ollama Error: {e}")
         return None
+
