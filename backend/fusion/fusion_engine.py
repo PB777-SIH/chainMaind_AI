@@ -18,7 +18,7 @@ class FusionEngine:
   def __init__(self):
     self.uri = "bolt://127.0.0.1:7687"
     self.user = "neo4j"
-    self.password = "expert_password"
+    self.password = os.getenv("NEO4J_PASSWORD", "expert_password")
     self.driver = GraphDatabase.driver(
         self.uri, auth=(self.user, self.password)
     )
@@ -97,29 +97,54 @@ class FusionEngine:
     print("=" * 65)
 
     # 3. Trigger Downstream Risk Propagation if Threshold Exceeded (> 0.40)
+    # if fused_risk >= 0.40:
+    #   print(
+    #       f"⚠️ HIGH RISK THRESHOLD EXCEEDED! Propagating graph risk from"
+    #       f" [{target_entity}]..."
+    #   )
+    #   downstream_impacts = self.propagate_risk_in_graph(
+    #       target_entity, fused_risk
+    #   )
+
+    #   if downstream_impacts:
+    #     print("\n🌊 DOWNSTREAM RISK PROPAGATION FLOW:")
+    #     for impact in downstream_impacts:
+    #       print(
+    #           f"   🌊 [Hop {impact['hops_from_source']}] {impact['entity']}"
+    #           f" ({impact['type']}) ---> Propagated Risk:"
+    #           f" {impact['inherited_risk']:.4f}"
+    #       )
+    #   else:
+    #     print("   ℹ️ No downstream supply-chain connections found in graph.")
+    # else:
+    #   print("✅ Risk within safe operational thresholds. No propagation.")
+
+    # fusion_engine.py — inside run_pipeline(), replace the final block with:
+    result = {
+        "total_fused_risk": fused_risk,
+        "weights": {"nlp": 0.4, "graph": 0.3, "econ": 0.2, "satellite": 0.1},
+        "propagated_impacts": [],
+    }
+
     if fused_risk >= 0.40:
-      print(
-          f"⚠️ HIGH RISK THRESHOLD EXCEEDED! Propagating graph risk from"
-          f" [{target_entity}]..."
-      )
-      downstream_impacts = self.propagate_risk_in_graph(
-          target_entity, fused_risk
-      )
+      print(f"⚠️ HIGH RISK THRESHOLD EXCEEDED! Propagating graph risk from [{target_entity}]...")
+      downstream_impacts = self.propagate_risk_in_graph(target_entity, fused_risk)
+      result["propagated_impacts"] = downstream_impacts
 
       if downstream_impacts:
         print("\n🌊 DOWNSTREAM RISK PROPAGATION FLOW:")
+
         for impact in downstream_impacts:
-          print(
-              f"   🌊 [Hop {impact['hops_from_source']}] {impact['entity']}"
-              f" ({impact['type']}) ---> Propagated Risk:"
-              f" {impact['inherited_risk']:.4f}"
-          )
+          print(f"   🌊 [Hop {impact['hops_from_source']}] {impact['entity']} ({impact['type']}) ---> Propagated Risk: {impact['inherited_risk']:.4f}")
+
       else:
         print("   ℹ️ No downstream supply-chain connections found in graph.")
+
     else:
       print("✅ Risk within safe operational thresholds. No propagation.")
 
-
+    return result
+  
 if __name__ == "__main__":
   engine = FusionEngine()
   try:

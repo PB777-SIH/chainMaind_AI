@@ -10,7 +10,7 @@ class GraphAnalytics:
     def __init__(self):
         self.uri = "bolt://127.0.0.1:7687"
         self.user = "neo4j"
-        self.password = "expert_password"
+        self.password = os.getenv("NEO4J_PASSWORD", "expert_password")
         self.driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
 
     def close(self):

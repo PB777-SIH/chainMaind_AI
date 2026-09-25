@@ -1,0 +1,51 @@
+[
+  {
+    "entity": "Neon Gas",
+    "category": "Raw Material",
+    "description": "Semiconductor-grade purified Neon (99.999% purity) is essential for excimer lasers used in DUV and EUV photolithography machines (ASML). Ukraine produces ~45-54% of the world's semiconductor-grade neon (suppliers like Ingas and Cryoin in Odesa/Mariupol). Geopolitical conflicts in the region create severe supply shocks and price spikes, directly impacting TSMC, Intel, and Samsung wafer throughput.",
+    "key_suppliers": ["Ingas", "Cryoin", "Linde", "Air Liquide"],
+    "criticality": 0.95
+  },
+  {
+    "entity": "Palladium",
+    "category": "Raw Material",
+    "description": "Palladium is critical for semiconductor packaging, sensor production, MRAM memory, and plating lead frames. Russia accounts for ~37-40% of global palladium mining output (via Nornickel). Sanctions or trade disruptions create acute shortages for packaging and assembly houses in Southeast Asia.",
+    "key_suppliers": ["Nornickel", "Sibanye-Stillwater"],
+    "criticality": 0.88
+  },
+  {
+    "entity": "Silicon Wafers (300mm / 200mm)",
+    "category": "Raw Material",
+    "description": "Ultra-pure monocrystalline silicon wafers serve as the physical substrate for integrated circuit fabrication. Japan dominates global wafer manufacturing (~55% market share via Shin-Etsu and SUMCO), alongside Taiwan (GlobalWafers) and Germany (Siltronic). Disruption in wafer supply halts all front-end fab operations globally.",
+    "key_suppliers": ["Shin-Etsu Handotai", "SUMCO", "GlobalWafers", "Siltronic"],
+    "criticality": 0.98
+  },
+  {
+    "entity": "EUV Photolithography",
+    "category": "Equipment & Process",
+    "description": "Extreme Ultraviolet (EUV) photolithography operates at 13.5nm wavelength and is required for sub-7nm semiconductor manufacturing nodes. ASML (Netherlands) holds an absolute monopoly as the sole producer of EUV systems. Key optics components are supplied exclusively by Carl Zeiss (Germany). Any stoppage at ASML or Carl Zeiss halts next-gen chip development for TSMC, Samsung, and Intel.",
+    "key_suppliers": ["ASML", "Carl Zeiss", "TRUMPF"],
+    "criticality": 1.00
+  },
+  {
+    "entity": "Fluorinated Polyimides & Photoresists",
+    "category": "Chemical Material",
+    "description": "High-purity photoresists and hydrogen fluoride are critical light-sensitive chemicals used to etch circuit patterns onto silicon wafers. Japan (Tokyo Ohka Kogyo, JSR Corporation, Shin-Etsu) controls over 80% of global advanced photoresist production.",
+    "key_suppliers": ["JSR Corporation", "Tokyo Ohka Kogyo", "Shin-Etsu Chemical"],
+    "criticality": 0.92
+  },
+  {
+    "entity": "Gallium & Germanium",
+    "category": "Raw Material",
+    "description": "Critical compounds for power electronics, RF chips, compound semiconductors (GaN/GaAs), and optical devices. China controls over 80% of global gallium supply and 60% of germanium supply. Export restrictions on these elements directly impact automotive chipmakers and power management IC vendors.",
+    "key_suppliers": ["China Aluminum Group", "Umicore"],
+    "criticality": 0.85
+  },
+  {
+    "entity": "Taiwan Strait Shipping Route",
+    "category": "Supply Route Bottleneck",
+    "description": "Over 48% of the global container fleet and nearly 88% of the world's largest container ships pass through the Taiwan Strait. A naval blockade or military crisis in the Taiwan Strait disrupts $2.4 Trillion in global trade and halts chip shipments from TSMC, UMC, and ASE Group to Apple, NVIDIA, Qualcomm, and global OEMs.",
+    "key_nodes": ["TSMC", "ASE Group", "Foxconn", "MediaTek"],
+    "criticality": 1.00
+  }
+]

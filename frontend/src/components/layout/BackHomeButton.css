@@ -1,0 +1,21 @@
+/* src/components/layout/BackHomeButton.css */
+.back-home-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 100px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--signal);
+  color: #06110a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(79, 242, 160, 0.25);
+  z-index: 30;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.back-home-fab:hover {
+  transform: translateY(-2px) scale(1.06);
+  box-shadow: 0 14px 34px rgba(79, 242, 160, 0.35);
+}

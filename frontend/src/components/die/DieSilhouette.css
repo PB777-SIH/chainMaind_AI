@@ -1,0 +1,187 @@
+.die-panel {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(8, 20, 16, 0.97), rgba(6, 9, 7, 0.98));
+  border: 1px solid var(--line-bright);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.die-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line-bright);
+  background: var(--bg-panel-raised);
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s, border-color 0.15s;
+}
+.die-close:hover {
+  color: var(--signal);
+  border-color: var(--signal-dim);
+}
+
+.die-header h3 {
+  margin: 4px 0 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.die-body {
+  flex: 1;
+  display: flex;
+  gap: 24px;
+  margin-top: 16px;
+  min-height: 0;
+}
+
+.die-art {
+  position: relative;
+  flex: 1.1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.die-svg {
+  width: 100%;
+  height: 100%;
+  max-height: 320px;
+}
+
+.die-stat {
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6, 9, 7, 0.7);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+}
+.die-stat-label {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.die-stat-value {
+  font-size: 18px;
+  color: var(--signal);
+  font-weight: 600;
+}
+
+.die-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.die-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.die-tabs button {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--ink-dim);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: all 0.15s;
+}
+.die-tabs button.active {
+  border-color: var(--signal-dim);
+  color: var(--signal);
+  background: var(--signal-soft);
+}
+
+.die-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.die-list li {
+  display: grid;
+  grid-template-columns: 12px 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 4px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+}
+.die-list-name {
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.die-list-type {
+  color: var(--ink-faint);
+  font-size: 11px;
+}
+.die-list-risk {
+  color: var(--signal);
+  font-size: 12px;
+}
+
+.die-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border-left: 1px solid var(--line-bright);
+  padding-left: 16px;
+}
+.die-timeline li {
+  position: relative;
+}
+.die-timeline li::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--signal-dim);
+}
+.die-timeline-year {
+  display: block;
+  color: var(--signal);
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+.die-timeline-text {
+  color: var(--ink-dim);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+@media (max-width: 720px) {
+  .die-body {
+    flex-direction: column;
+  }
+}

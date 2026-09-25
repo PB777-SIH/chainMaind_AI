@@ -7,7 +7,7 @@ class SupplyChainOptimizer:
     def __init__(self):
         self.uri = "bolt://127.0.0.1:7687"
         self.user = "neo4j"
-        self.password = "expert_password"
+        self.password = os.getenv("NEO4J_PASSWORD", "expert_password")
         self.driver = GraphDatabase.driver(self.uri, auth=(self.user, self.password))
 
     def close(self):
@@ -16,11 +16,11 @@ class SupplyChainOptimizer:
     def seed_alternatives(self):
         """Adds competitor foundries to the graph for the optimizer to choose from."""
         query = """
-        // Create alternative suppliers with specific cost and risk metrics
-        MERGE (samsung:Foundry {name: 'Samsung Foundry', region: 'South Korea', cost_multiplier: 1.15, geo_risk: 0.20})
-        MERGE (intel:Foundry {name: 'Intel Foundry', region: 'USA', cost_multiplier: 1.40, geo_risk: 0.05})
+        MERGE (samsung:Foundry {name: 'Samsung Foundry'})
+          SET samsung.region = 'South Korea', samsung.cost_multiplier = 1.15, samsung.geo_risk = 0.20
+        MERGE (intel:Foundry {name: 'Intel Foundry'})
+          SET intel.region = 'USA', intel.cost_multiplier = 1.40, intel.geo_risk = 0.05
 
-        // Ensure Apple exists and wire them up as alternative paths
         MERGE (apple:DesignHouse {name: 'Apple'})
         MERGE (samsung)-[:ALTERNATIVE_SUPPLIER]->(apple)
         MERGE (intel)-[:ALTERNATIVE_SUPPLIER]->(apple)
@@ -46,9 +46,14 @@ class SupplyChainOptimizer:
             results = session.run(query, target_node=target_node, disrupted_node=disrupted_node)
             alternatives = [record for record in results]
 
+        # if not alternatives:
+        #     print(f"❌ CRITICAL FAILURE: No alternative suppliers found for {target_node}. Supply chain broken.")
+        #     return
+
+        # optimizer.py — inside run_what_if_scenario(), replace the bare return
         if not alternatives:
             print(f"❌ CRITICAL FAILURE: No alternative suppliers found for {target_node}. Supply chain broken.")
-            return
+            raise ValueError(f"No alternative suppliers found for {target_node}")
 
         print(f"🔍 Analyzing alternative routes for {target_node}...\n")
 
@@ -72,10 +77,30 @@ class SupplyChainOptimizer:
                 best_optimization_score = optimization_score
                 best_option = alt
 
+        # optimizer.py — inside run_what_if_scenario(), after the for-loop, replace the final print block with:
         print("=" * 75)
         print(f"🏆 OPTIMAL REROUTE IDENTIFIED: Switching production to {best_option['name']} ({best_option['region']}).")
         print(f"   Reasoning: Achieves the lowest combined cost/risk penalty ({best_optimization_score:.3f}).")
         print("=" * 75)
+
+        return {
+            "target_entity": target_node,
+            "disrupted_node": disrupted_node,
+            "optimal_reroute": {
+                "name": best_option["name"],
+                "region": best_option["region"],
+                "penalty_score": round(best_optimization_score, 3),
+            },
+            "alternatives": [
+                {
+                    "name": a["name"],
+                    "cost_multiplier": a["cost"],
+                    "geo_risk": a["risk"],
+                    "penalty_score": round((a["cost"] * 0.4) + (a["risk"] * 0.6), 3),
+                }
+                for a in alternatives
+            ],
+        }
 
 
 if __name__ == "__main__":
